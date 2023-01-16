@@ -37,14 +37,15 @@ const Profile = () => {
 
   const validateEdit = () => {
     let regexName = /^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/;
-    let error = "Enter a valid first name and last name";
+    let errorMessage = "Enter a valid first name and last name";
     let data = { token };
+    let error = false;
 
     if (regexName.test(newFirstName)) {
       data.firstName = newFirstName;
     } else {
       if (newFirstName) {
-        dispatch(putErrorMessageEdit(error));
+        error = true;
       }
       data.firstName = user.firstName;
     }
@@ -53,7 +54,7 @@ const Profile = () => {
       data.lastName = newLastName;
     } else {
       if (newLastName) {
-        dispatch(putErrorMessageEdit(error));
+        error = true;
       }
       data.lastName = user.lastName;
     }
@@ -61,12 +62,12 @@ const Profile = () => {
     if (!newLastName && !newFirstName) {
       dispatch(toggleEditName());
     } else if (
-      data.firstName === newFirstName ||
-      data.lastName == newLastName
+      !error &&
+      (data.firstName === newFirstName || data.lastName === newLastName)
     ) {
       dispatch(updateUserProfileAttributes(data));
     } else {
-      dispatch(putErrorMessageEdit(error));
+      dispatch(putErrorMessageEdit(errorMessage));
     }
   };
 
