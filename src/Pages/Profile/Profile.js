@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import {
   changeName,
   toggleEditName,
-  updateUserProfileAttributes,
   putErrorMessageEdit,
 } from "../../Features/User/user";
+
+import { updateUserProfileAttributes } from "../../Service/service";
 
 /**
  * Component for showing Profile page
@@ -34,6 +34,15 @@ const Profile = () => {
       navigate("/");
     }
   }, [user]);
+
+  useEffect(() => {
+    if (
+      errorMessageProfile === "jwt expired" ||
+      errorMessageProfile === "invalid token"
+    ) {
+      localStorage.removeItem("token");
+    }
+  }, [errorMessageProfile]);
 
   const validateEdit = () => {
     let regexName = /^[-'a-zA-ZÀ-ÖØ-öø-ÿ]+$/;

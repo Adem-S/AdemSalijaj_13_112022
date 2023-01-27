@@ -1,5 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+
+import {
+  fetchUserData,
+  updateUserProfileAttributes,
+} from "../../Service/service";
 
 const initialState = {
   user: null,
@@ -9,57 +13,6 @@ const initialState = {
   newFirstName: "",
   newLastName: "",
 };
-
-let profileApi = "http://localhost:3001/api/v1/user/profile";
-
-export const fetchUserData = createAsyncThunk(
-  "user",
-  async (token, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(
-        profileApi,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (err) {
-      if (!err.response) {
-        throw err;
-      }
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
-
-export const updateUserProfileAttributes = createAsyncThunk(
-  "userAttributes",
-  async ({ token, firstName, lastName }, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(
-        profileApi,
-        {
-          firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-          lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (err) {
-      if (!err.response) {
-        throw err;
-      }
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
 
 const userSlice = createSlice({
   name: "user",

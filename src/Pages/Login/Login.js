@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   changeEmail,
   changePassword,
-  fetchUserByCredentials,
   toggleRememberMe,
 } from "../../Features/Auth/auth";
 
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { fetchUserByCredentials } from "../../Service/service";
 
 /**
- * Component for showing Login  page
+ * Component for showing Login page
  *
  * @component
  */
